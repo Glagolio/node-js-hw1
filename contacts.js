@@ -5,34 +5,35 @@ const contactsPath = path.resolve('./db/contacts.json');
 
 async function listContacts() {
   const data = await fs.readFile(contactsPath, 'utf8');
-  const parsedData = await JSON.parse(data);
-  console.log(parsedData);
+  const parsedData = JSON.parse(data);
+  console.table(parsedData);
 }
 
 async function getContactsById(contactId) {
   const data = await fs.readFile(contactsPath, 'utf8');
-  const parsedData = await JSON.parse(data);
-  const contactById = parsedData.find(contact => Number(contact.id) === contactId);
-  console.log(contactById);
+  const parsedData = JSON.parse(data);
+  const contactById = parsedData.find(contact => contact.id === contactId);
+  console.table(contactById);
   return contactById;
 }
 
 async function removeContact(contactId) {
   const data = await fs.readFile(contactsPath, 'utf8');
-  const parsedData = await JSON.parse(data);
+  const parsedData = JSON.parse(data);
   const newData = parsedData.filter(contact => Number(contact.id) !== contactId);
+  console.table(newData);
   const jsonNewData = JSON.stringify(newData);
   fs.writeFile(contactsPath, jsonNewData);
 }
 
 async function addContact(name, email, phone) {
   const data = await fs.readFile(contactsPath, 'utf8');
-  const parsedData = await JSON.parse(data);
+  const parsedData = JSON.parse(data);
   const lastId = Number(parsedData[parsedData.length - 1].id);
   const id = String(lastId + 1);
   parsedData.push({ id, name, email, phone });
+  console.table(parsedData);
   const jsonNewData = JSON.stringify(parsedData);
-  console.log(jsonNewData);
   fs.writeFile(contactsPath, jsonNewData);
 }
 
